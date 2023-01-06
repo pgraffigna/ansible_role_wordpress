@@ -1,0 +1,40 @@
+---
+- include_vars: ../../vars_main.yml
+
+- name: Instala Apache
+  apt:
+    name: "{{ item }}"
+    update_cache: true
+    cache_valid_time: 3600
+  with_items: "{{ apache_packages }}"
+
+- name: Instala módulos PHP
+  apt:
+    name: "{{ item }}"
+    update_cache: true
+    cache_valid_time: 3600
+  with_items: "{{ php_packages }}"
+
+- name: Apache virtualhost
+  template:
+    src: "files/{{ http_conf }}.j2"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+
+- name: Activa modulo rewrite
+  shell: /usr/sbin/a2enmod rewrite
+
+- name: Activa sitio
+  shell: /usr/sbin/a2ensite {{ http_conf }}
+
+- name: Desactiva sitio por default
+  shell: /usr/sbin/a2dissite 000-default.conf
+
+# - name: "Permitir acceso a puertos {{ http_port }} {{ https_port }}"
+#   ufw:
+#     rule: allow
+#     port: "{{ item }}"
+#     proto: tcp
+#   with_items:
+#     - "{{ http_port }}"
+#     - "{{ https_port }}"
+

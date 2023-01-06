@@ -1,0 +1,37 @@
+#################### backupeando el sitio a migrar
+# backup de osticket
+tar -zcf ~/wordpress.tar.gz /var/www/wordpress
+
+# dump de la base de datos  
+mysqldump --opt -u root -p wp_db > ~/backup.sql
+
+################## restaurando el sitio
+# crear la db donde poner el backup
+> CREATE DATABASE wp_db;
+
+# copiar la db 
+mysql -u root -p wp_db < ~/backup.sql
+
+# copiar sitio 
+tar -zxf wordpress.tar.gz
+sudo chown -R www-data:www-data var/www/wordpress/
+cp -pr ~/var/www/wordpress/ /var/www
+ 
+# actualizar site_url + home en wp_db 
+update wp_options set option_value='http://nuevo_sitio.lab' where option_name='siteurl'
+update wp_options set option_value='https://nuevo_sitio.lab' where option_name='home'
+
+# reiniciar apache2
+sudo systemctl restart apache2.service
+
+## ssl config sitio.conf
+<VirtualHost _default_:443>
+SSLEngine on
+SSLCertificateFile /etc/ssl/certs/{{ server_hostname }}.crt
+SSLCertificateKeyFile /etc/ssl/private/{{ server_hostname }}.key
+
+## ssl modulos
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo apache2ctl configtest
+sudo systemctl restart apache2

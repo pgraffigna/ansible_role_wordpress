@@ -1,0 +1,8 @@
+---
+- hosts: wp
+  become: true
+
+  roles:
+    - { role: mariadb, tags: [ 'mariadb' ] }
+    - apache2
+    - { role: wordpress, tags: [ 'wordpress' ] }

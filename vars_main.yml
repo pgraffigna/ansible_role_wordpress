@@ -1,0 +1,18 @@
+---
+# mariadb
+mysql_root_password: "mysql_root_password"
+mysql_db: "wp_db"
+mysql_user: "wp_user"
+mysql_password: "wp_pass"
+
+# apache
+mail_admins: "administradores@cultura.lab"
+http_host: "wp.cultura.lab"
+http_conf: "sitio.conf"
+http_port: "80"
+https_port: "443"
+usuario_apache: www-data
+grupo_apache: www-data
+
+# wordpress
+wp_config: "wp-config.php"

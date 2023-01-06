@@ -1,0 +1,19 @@
+---
+- include_vars: ../../vars_main.yml
+
+- name: Descarga y descomprime wordpress
+  unarchive:
+    src: "{{ wp_url }}"
+    dest: /var/www
+    owner: "{{ usuario_apache }}"
+    group: "{{ grupo_apache }}"
+    creates: /var/www/wordpress
+    mode: 0755
+    remote_src: true
+
+- name: configurando wordpress
+  template:
+    src: "files/{{ wp_config }}.j2"
+    dest: "/var/www/wordpress/{{ wp_config }}"
+  notify: servicios_apache
+
