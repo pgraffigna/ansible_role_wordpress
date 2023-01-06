@@ -1,5 +1,5 @@
 #################### backupeando el sitio a migrar
-# backup de osticket
+# backup de worpress
 tar -zcf ~/wordpress.tar.gz /var/www/wordpress
 
 # dump de la base de datos  
@@ -31,7 +31,5 @@ SSLCertificateFile /etc/ssl/certs/{{ server_hostname }}.crt
 SSLCertificateKeyFile /etc/ssl/private/{{ server_hostname }}.key
 
 ## ssl modulos
-sudo a2enmod ssl
-sudo a2enmod headers
-sudo apache2ctl configtest
+sudo a2enmod ssl headers
 sudo systemctl restart apache2
