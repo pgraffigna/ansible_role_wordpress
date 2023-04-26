@@ -2,7 +2,7 @@
 
 Ansible Playbook para desplegar un Servidor Wordpress + notas para realizar migraciones de sitios.
 
-Testeado con Vagrant + qemu + ubuntu_20.04
+Testeado con Vagrant + qemu + ubuntu_20.04 + ansible_2.10
 
 ---
 ### roles

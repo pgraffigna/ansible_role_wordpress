@@ -17,7 +17,7 @@
 - name: Eliminar acceso anonimo
   mysql_user:
     name: ''
-    host_all: yes
+    host_all: true
     state: absent
     login_user: root
     login_password: "{{ mysql_root_password }}"
@@ -28,6 +28,7 @@
     state: absent
     login_user: root
     login_password: "{{ mysql_root_password }}"
+  no_log: true
 
 - name: Crea la base de datos para wordpress
   mysql_db:
@@ -35,6 +36,7 @@
     state: present
     login_user: root
     login_password: "{{ mysql_root_password }}"
+  no_log: true
 
 - name: Crea el usuario "{{ mysql_user }}"
   mysql_user:
