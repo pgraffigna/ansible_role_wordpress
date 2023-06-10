@@ -1,8 +1,10 @@
 ---
-- include_vars: ../../vars_main.yml
+- name: Incluye el archivo con las variables
+  ansible.builtin.include_vars:
+    file: vars_main.yml
 
 - name: Descarga y descomprime wordpress
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ wp_url }}"
     dest: /var/www
     owner: "{{ usuario_apache }}"
@@ -12,7 +14,7 @@
     remote_src: true
 
 - name: configurando wordpress
-  template:
+  ansible.builtin.template:
     src: "files/{{ wp_config }}.j2"
     dest: "/var/www/wordpress/{{ wp_config }}"
   notify: servicios_apache

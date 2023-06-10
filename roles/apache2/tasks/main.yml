@@ -1,33 +1,35 @@
 ---
-- include_vars: ../../vars_main.yml
+- name: Incluye el archivo con las variables
+  ansible.builtin.include_vars:
+    file: vars_main.yml
 
 - name: Instala Apache
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
     cache_valid_time: 3600
   with_items: "{{ apache_packages }}"
 
 - name: Instala módulos PHP
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
     cache_valid_time: 3600
   with_items: "{{ php_packages }}"
 
 - name: Apache virtualhost
-  template:
+  ansible.builtin.template:
     src: "files/{{ http_conf }}.j2"
     dest: "/etc/apache2/sites-available/{{ http_conf }}"
 
 - name: Activa modulo rewrite
-  shell: /usr/sbin/a2enmod rewrite
+  ansible.builtin.shell: /usr/sbin/a2enmod rewrite
 
 - name: Activa sitio
-  shell: /usr/sbin/a2ensite {{ http_conf }}
+  ansible.builtin.shell: /usr/sbin/a2ensite {{ http_conf }}
 
 - name: Desactiva sitio por default
-  shell: /usr/sbin/a2dissite 000-default.conf
+  ansible.builtin.shell: /usr/sbin/a2dissite 000-default.conf
 
 # - name: "Permitir acceso a puertos {{ http_port }} {{ https_port }}"
 #   ufw:

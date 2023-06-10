@@ -1,21 +1,23 @@
 ---
-- include_vars: ../../vars_main.yml
+- name: Incluye el archivo con las variables
+  ansible.builtin.include_vars:
+    file: vars_main.yml
 
 - name: Instalacion mariaDB
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
     cache_valid_time: 3600
   with_items: "{{ mariadb_packages }}"
 
 - name: Configura password para usuario root
-  mysql_user:
+  ansible.builtin.mysql_user:
     name: root
     password: "{{ mysql_root_password }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
 - name: Eliminar acceso anonimo
-  mysql_user:
+  ansible.builtin.mysql_user:
     name: ''
     host_all: true
     state: absent
@@ -23,7 +25,7 @@
     login_password: "{{ mysql_root_password }}"
 
 - name: Elimina la base de datos test
-  mysql_db:
+  ansible.builtin.mysql_db:
     name: test
     state: absent
     login_user: root
@@ -31,7 +33,7 @@
   no_log: true
 
 - name: Crea la base de datos para wordpress
-  mysql_db:
+  ansible.builtin.mysql_db:
     name: "{{ mysql_db }}"
     state: present
     login_user: root
@@ -39,7 +41,7 @@
   no_log: true
 
 - name: Crea el usuario "{{ mysql_user }}"
-  mysql_user:
+  ansible.builtin.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
     host: localhost
