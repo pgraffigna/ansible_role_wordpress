@@ -1,0 +1,33 @@
+---
+- name: Incluye el archivo con las variables
+  ansible.builtin.include_vars:
+    file: vars_main.yml
+
+- name: Restaurando dump de la db en database
+  community.mysql.mysql_db:
+    name: "{{ mysql_db }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    state: import
+    target: /tmp/backup.sql
+
+- name: Descomprime tar.gz con sitio
+  ansible.builtin.unarchive:
+    src: /tmp/wordpress.tar.gz
+    dest: /var/www/
+    creates: /var/www/wordpress
+    owner: "{{ usuario_apache }}"
+    group: "{{ grupo_apache }}" 
+    remote_src: true    
+
+## actualizar site_url + home en db para sitio migrado
+- name: Run several insert queries against db test_db in single transaction
+  community.mysql.mysql_query:
+    login_db: "{{ mysql_db }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    query:
+    - UPDATE wp_options SET option_value='http://{{ http_host }}' WHERE option_name='siteurl'
+    - UPDATE wp_options SET option_value='https://{{ http_host }}' WHERE option_name='home'
+    single_transaction: true
+  notify: servicios_apache    

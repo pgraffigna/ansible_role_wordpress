@@ -7,7 +7,7 @@ mysql_password: "wp_pass"
 
 # apache
 mail_admins: "administradores@cultura.lab"
-http_host: "wp.cultura.lab"
+http_host: "testing.cultura.lab"
 http_conf: "sitio.conf"
 http_port: "80"
 https_port: "443"

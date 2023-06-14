@@ -31,12 +31,3 @@
 - name: Desactiva sitio por default
   ansible.builtin.shell: /usr/sbin/a2dissite 000-default.conf
 
-# - name: "Permitir acceso a puertos {{ http_port }} {{ https_port }}"
-#   ufw:
-#     rule: allow
-#     port: "{{ item }}"
-#     proto: tcp
-#   with_items:
-#     - "{{ http_port }}"
-#     - "{{ https_port }}"
-

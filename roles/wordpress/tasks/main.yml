@@ -6,7 +6,7 @@
 - name: Descarga y descomprime wordpress
   ansible.builtin.unarchive:
     src: "{{ wp_url }}"
-    dest: /var/www
+    dest: /var/www/
     owner: "{{ usuario_apache }}"
     group: "{{ grupo_apache }}"
     creates: /var/www/wordpress

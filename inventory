@@ -1,5 +1,5 @@
 [wp]
-192.168.121.218
+192.168.121.195
 
 [wp:vars]
 ansible_ssh_user=vagrant
