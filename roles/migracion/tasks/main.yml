@@ -3,25 +3,24 @@
   ansible.builtin.include_vars:
     file: vars_main.yml
 
-- name: Restaurando dump de la db en database
+- name: Restaurar dump de la db en database
   community.mysql.mysql_db:
     name: "{{ mysql_db }}"
     login_user: root
     login_password: "{{ mysql_root_password }}"
     state: import
-    target: /tmp/backup.sql
+    target: "/tmp/{{ backup_db }}"
 
-- name: Descomprime tar.gz con sitio
+- name: Migrar sitio
   ansible.builtin.unarchive:
-    src: /tmp/wordpress.tar.gz
+    src: "/tmp/{{ backup_sitio }}"
     dest: /var/www/
-    creates: /var/www/wordpress
     owner: "{{ usuario_apache }}"
-    group: "{{ grupo_apache }}" 
-    remote_src: true    
+    group: "{{ grupo_apache }}"
+    remote_src: true
 
 ## actualizar site_url + home en db para sitio migrado
-- name: Run several insert queries against db test_db in single transaction
+- name: Fix para cambiar nuevo sitio en db wordpress
   community.mysql.mysql_query:
     login_db: "{{ mysql_db }}"
     login_user: root
@@ -30,4 +29,4 @@
     - UPDATE wp_options SET option_value='http://{{ http_host }}' WHERE option_name='siteurl'
     - UPDATE wp_options SET option_value='https://{{ http_host }}' WHERE option_name='home'
     single_transaction: true
-  notify: servicios_apache    
+  notify: servicios_apache

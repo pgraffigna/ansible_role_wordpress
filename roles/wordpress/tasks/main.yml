@@ -3,13 +3,21 @@
   ansible.builtin.include_vars:
     file: vars_main.yml
 
+- name: Creando directorio para wordpress
+  ansible.builtin.file:
+    path: /var/www/wordpress/
+    state: directory
+    owner: "{{ usuario_apache }}"
+    group: "{{ grupo_apache }}"
+    mode: 0755
+
 - name: Descarga y descomprime wordpress
   ansible.builtin.unarchive:
     src: "{{ wp_url }}"
-    dest: /var/www/
+    dest: /var/www/wordpress/
     owner: "{{ usuario_apache }}"
     group: "{{ grupo_apache }}"
-    creates: /var/www/wordpress
+    extra_opts: --strip-components=1
     mode: 0755
     remote_src: true
 

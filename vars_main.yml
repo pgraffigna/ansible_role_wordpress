@@ -17,3 +17,7 @@ grupo_apache: www-data
 # wordpress
 wp_config: "wp-config.php"
 wp_url: "https://wordpress.org/latest.tar.gz"
+
+# migracion
+backup_db: backup.sql
+backup_sitio: wordpress.tar.gz
