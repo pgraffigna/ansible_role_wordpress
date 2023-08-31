@@ -1,13 +1,13 @@
 ---
 # mariadb
 mysql_root_password: "mysql_root_password"
-mysql_db: "wp_db"
-mysql_user: "wp_user"
-mysql_password: "wp_pass"
+mysql_db: "mysql_db"
+mysql_user: "mysql_user"
+mysql_password: "mysql_password"
 
 # apache
 mail_admins: "administradores@cultura.lab"
-http_host: "testing.cultura.lab"
+server_name: "sitio.home.lab"
 http_conf: "sitio.conf"
 http_port: "80"
 https_port: "443"

@@ -14,10 +14,18 @@
 - name: Migrar sitio
   ansible.builtin.unarchive:
     src: "/tmp/{{ backup_sitio }}"
-    dest: /var/www/
+    dest: /var/www
     owner: "{{ usuario_apache }}"
     group: "{{ grupo_apache }}"
     remote_src: true
+    extra_opts: --strip-components=2
+
+- name: Actualizar clave para conexion db
+  ansible.builtin.lineinfile:
+    path: "/var/www/{{ server_name }}/public/wp-config.php"
+    regexp: "define\\( 'DB_PASSWORD', '(.)+' \\);"
+    line: "define('DB_PASSWORD', '{{ mysql_password }}');"
+  notify: servicios_apache
 
 ## actualizar site_url + home en db para sitio migrado
 - name: Fix para cambiar nuevo sitio en db wordpress
@@ -26,7 +34,7 @@
     login_user: root
     login_password: "{{ mysql_root_password }}"
     query:
-    - UPDATE wp_options SET option_value='http://{{ http_host }}' WHERE option_name='siteurl'
-    - UPDATE wp_options SET option_value='https://{{ http_host }}' WHERE option_name='home'
+    - UPDATE wp_options SET option_value='http://{{ server_name }}' WHERE option_name='siteurl'
+    - UPDATE wp_options SET option_value='https://{{ server_name }}' WHERE option_name='home'
     single_transaction: true
-  notify: servicios_apache
+  notify: servicios_apache 
