@@ -10,3 +10,4 @@ Testeado con Vagrant + qemu + ubuntu_20.04 + ansible_2.10
 - mariadb
 - apache2
 - wordpress
+- migracion

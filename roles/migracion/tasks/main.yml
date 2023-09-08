@@ -27,7 +27,6 @@
     line: "define('DB_PASSWORD', '{{ mysql_password }}');"
   notify: servicios_apache
 
-## actualizar site_url + home en db para sitio migrado
 - name: Fix para cambiar nuevo sitio en db wordpress
   community.mysql.mysql_query:
     login_db: "{{ mysql_db }}"
