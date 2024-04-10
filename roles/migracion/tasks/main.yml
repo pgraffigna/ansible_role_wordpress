@@ -3,7 +3,7 @@
   ansible.builtin.include_vars:
     file: vars_main.yml
 
-- name: Restaurar dump de la db en database
+- name: Restaurar dump de la db
   community.mysql.mysql_db:
     name: "{{ mysql_db }}"
     login_user: root
@@ -20,12 +20,11 @@
     remote_src: true
     extra_opts: --strip-components=2
 
-- name: Actualizar clave para conexion db
+- name: Actualizando wp-config.php
   ansible.builtin.lineinfile:
     path: "/var/www/{{ server_name }}/public/wp-config.php"
     regexp: "define\\( 'DB_PASSWORD', '(.)+' \\);"
     line: "define('DB_PASSWORD', '{{ mysql_password }}');"
-  notify: servicios_apache
 
 - name: Fix para cambiar nuevo sitio en db wordpress
   community.mysql.mysql_query:
@@ -36,4 +35,4 @@
     - UPDATE wp_options SET option_value='http://{{ server_name }}' WHERE option_name='siteurl'
     - UPDATE wp_options SET option_value='https://{{ server_name }}' WHERE option_name='home'
     single_transaction: true
-  notify: servicios_apache 
+  notify: servicios_apache

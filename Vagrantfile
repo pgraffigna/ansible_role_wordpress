@@ -1,6 +1,6 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
-IMAGEN = "generic/ubuntu2004"
-HOSTNAME = "testing-wordpress"
+IMAGEN = "generic/ubuntu2204"
+HOSTNAME = "wordpress.home.local"
 
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
@@ -10,7 +10,6 @@ Vagrant.configure("2") do |config|
     s.vm.box = IMAGEN
     s.vm.hostname = HOSTNAME
     s.vm.box_check_update = false
-
     s.vm.provider :libvirt do |v|
       v.memory = 2048
       v.cpus = 2
