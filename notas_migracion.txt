@@ -15,3 +15,16 @@ cp -pr ~/var/www/wordpress/ /var/www
 # actualizar site_url + home en wp_db
 update wp_options set option_value='http://nuevo_sitio.lab' where option_name='siteurl'
 update wp_options set option_value='https://nuevo_sitio.lab' where option_name='home'
+
+# acceso desde todos lados
+CREATE USER 'sammy'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'sammy'@'%';
+FLUSH PRIVILEGES;
+
+# acceso desde servidor remoto especifico
+CREATE USER 'sammy'@'192.168.121.1' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'sammy'@'192.168.121.1';
+FLUSH PRIVILEGES;
+
+# migrando db en remoto usando docker
+docker run -i --rm mysql mysql -h192.168.121.1 -usammy -ppassword -f < world.sql
