@@ -7,3 +7,4 @@
     - apache2
     - { role: wordpress, tags: [ 'wordpress' ] }
     - { role: migracion, tags: [ 'migracion' ] }
+    - { role: plugins, tags: [ 'plugins' ] }

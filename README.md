@@ -8,12 +8,13 @@ Testeado con Vagrant + qemu + ubuntu_22.04 + ansible_2.10
 
 ### Descripción
 
-La idea del proyecto es automatizar vía ansible la instalación/configuración de un servicio [wordpress](https://es-ar.wordpress.org/download/) para pruebas de laboratorio, el repo cuenta con 4 roles:
+La idea del proyecto es automatizar vía ansible la instalación/configuración de un servicio [wordpress](https://es-ar.wordpress.org/download/) para pruebas de laboratorio, el repo cuenta con 5 roles:
 
 1. apache2
 2. mariadb
 3. wordpress
 4. migracion
+5. plugins
 
 ### Dependencias
 

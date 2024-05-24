@@ -17,7 +17,15 @@ grupo_apache: www-data
 # wordpress
 wp_config: "wp-config.php"
 wp_url: "https://wordpress.org/latest.tar.gz"
+wp_cli_url: "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+wp_plugins_path: "/var/www/wordpress/wp-content/plugins"
+wp_path: "/var/www/wordpress"
 
 # migracion
 backup_db: backup.sql
 backup_sitio: wordpress.tar.gz
+
+# plugins
+plugins_check:
+  - wps-hide-login
+  - wp-mail-smtp

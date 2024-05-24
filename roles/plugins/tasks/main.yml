@@ -1,0 +1,38 @@
+---
+- name: Incluye el archivo con las variables
+  ansible.builtin.include_vars:
+    file: vars_main.yml
+
+- name: Copiando zip
+  ansible.builtin.copy:
+    src: "{{ item.origen }}"
+    dest: "{{ item.destino }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { origen: 'files/wps-hide-login.1.9.15.2.zip', destino: "{{ wp_plugins_path }}/wps-hide-login.1.9.15.2.zip" }
+    - { origen: 'files/wp-mail-smtp.4.0.1.zip', destino: "{{ wp_plugins_path }}/wp-mail-smtp.4.0.1.zip" }
+
+- name: Verificar si el plugin esta instalado
+  ansible.builtin.stat:
+    path: "{{ wp_plugins_path }}/{{ item }}"
+  with_items: "{{ plugins_check }}"
+  register: p
+
+- name: Instalando plugins via zip
+  ansible.builtin.command: wp --allow-root --no-color --path="{{ wp_path }}" plugin install "{{ item }}"
+  loop:
+    - "{{ wp_plugins_path }}/wps-hide-login.1.9.15.2.zip"
+    - "{{ wp_plugins_path }}/wp-mail-smtp.4.0.1.zip"
+  when: not p.stat.isdir is defined
+
+- name: Activar plugins
+  ansible.builtin.command: wp --allow-root --no-color --path="{{ wp_path }}" plugin activate "{{ item }}"
+  loop:
+    - "wps-hide-login"
+
+- name: Desactivar plugins
+  ansible.builtin.command: wp --allow-root --no-color --path="{{ wp_path }}" plugin deactivate "{{ item }}"
+  loop:
+    - "wp-mail-smtp"
